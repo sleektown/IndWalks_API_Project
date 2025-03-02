@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using INDWalks.Data;
+using INDWalks.Repositories;
+using INDWalks.Mappings;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,6 +14,12 @@ builder.Services.AddSwaggerGen();
 
 // Injected the DbContext class <INDWalksDbContext>
 builder.Services.AddDbContext<INDWalksDbContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("DBPG")));
+
+builder.Services.AddScoped<IRegionRepository, SQLRegionRepository>();
+
+builder.Services.AddScoped<IWalksRepository, SQLWalksRepository>();
+
+builder.Services.AddAutoMapper(typeof(AutoMapperProfiles));
 
 var app = builder.Build();
 
