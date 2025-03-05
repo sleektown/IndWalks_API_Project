@@ -1,5 +1,9 @@
 ﻿using AutoMapper;
+<<<<<<< HEAD
 using INDWalks.CustomActionValidations;
+=======
+using INDWalks.CustomActionFilters;
+>>>>>>> b7c2fdf96445235eec9decdc0f44e996b4ba6c4e
 using INDWalks.Data;
 using INDWalks.Models.Domain;
 using INDWalks.Models.DTOs;
@@ -85,6 +89,10 @@ namespace INDWalks.Controllers
         public async Task<IActionResult> CreateRegion([FromBody]AddRegionRequestDto addregionreqdto)
         {
 
+            //if (!ModelState.IsValid)          // Model Validations
+            //{
+            //    return BadRequest(ModelState);
+            //}
             // Map DTO to Domain
 
             //var regionDomain = new Regions
@@ -93,26 +101,28 @@ namespace INDWalks.Controllers
             //    Code = addregionreqdto.Code,
             //    RegionImageUrl = addregionreqdto.RegionImageUrl
             //};
-
-            var regionDomain = mapper.Map<Regions>(addregionreqdto);
-
-            // Use Domain Models to Create entry in Db.
-            regionDomain = await regionRepository.CreateRegionsAsync(regionDomain);
-
-            // Map Domain Model back to DTO
-
-            //var regionDTO = new RegionsDto
+            //else
             //{
-            //    Id = regionDomain.Id,
-            //    Name = regionDomain.Name,
-            //    Code = regionDomain.Code,
-            //    RegionImageUrl = regionDomain.RegionImageUrl
+                var regionDomain = mapper.Map<Regions>(addregionreqdto);
 
-            //};
+                // Use Domain Models to Create entry in Db.
+                regionDomain = await regionRepository.CreateRegionsAsync(regionDomain);
 
-            var regionDTO = mapper.Map<RegionsDto>(regionDomain);
+                // Map Domain Model back to DTO
 
-            return CreatedAtAction(nameof(GetRegionById), new {id = regionDTO.Id},regionDTO);
+                //var regionDTO = new RegionsDto
+                //{
+                //    Id = regionDomain.Id,
+                //    Name = regionDomain.Name,
+                //    Code = regionDomain.Code,
+                //    RegionImageUrl = regionDomain.RegionImageUrl
+
+                //};
+
+                var regionDTO = mapper.Map<RegionsDto>(regionDomain);
+
+                return CreatedAtAction(nameof(GetRegionById), new { id = regionDTO.Id }, regionDTO);
+            //}
         }
 
         [HttpPut]
@@ -120,6 +130,7 @@ namespace INDWalks.Controllers
         [ValidateModel]
         public async Task<IActionResult> UpdateRegion([FromRoute] Guid id, [FromBody] UpdateRegionRequestDto updateregiondto)
         {
+          
             // Map DTO with Domain
 
             //var updateregionDomainModel = new Regions()
@@ -128,31 +139,32 @@ namespace INDWalks.Controllers
             //    Code = updateregiondto.Code,
             //    RegionImageUrl = updateregiondto.RegionImageUrl
             //};
+          
+                var updateregionDomainModel = mapper.Map<Regions>(updateregiondto);
 
-            var updateregionDomainModel = mapper.Map<Regions>(updateregiondto);
+                updateregionDomainModel = await regionRepository.UpdateRegionsAsync(id, updateregionDomainModel);
 
-            updateregionDomainModel = await regionRepository.UpdateRegionsAsync(id, updateregionDomainModel);
+                // Check if DTO exist or not
+                if (updateregionDomainModel == null)
+                {
+                    return NotFound("No data found with this Id.");
+                }
 
-            // Check if DTO exist or not
-            if (updateregionDomainModel == null)
-            {
-                return NotFound("No data found with this Id.");
-            }
+                // Map Domain to DTO
 
-            // Map Domain to DTO
+                //var updateregionDTOModel = new RegionsDto
+                //{
+                //    Id = updateregionDomainModel.Id,
+                //    Code = updateregionDomainModel.Code,
+                //    Name = updateregionDomainModel.Name,
+                //    RegionImageUrl = updateregionDomainModel.RegionImageUrl
 
-            //var updateregionDTOModel = new RegionsDto
-            //{
-            //    Id = updateregionDomainModel.Id,
-            //    Code = updateregionDomainModel.Code,
-            //    Name = updateregionDomainModel.Name,
-            //    RegionImageUrl = updateregionDomainModel.RegionImageUrl
+                //};
 
-            //};
+                var updateregionDTOModel = mapper.Map<RegionsDto>(updateregionDomainModel);
 
-            var updateregionDTOModel = mapper.Map<RegionsDto>(updateregionDomainModel);
-
-            return Ok(updateregionDTOModel);
+                return Ok(updateregionDTOModel);
+            
         }
 
 

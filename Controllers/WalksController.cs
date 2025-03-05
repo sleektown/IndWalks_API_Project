@@ -28,16 +28,18 @@ namespace INDWalks.Controllers
         [ValidateModel]
         public async Task<IActionResult> CreateWalks([FromBody] WalksRequestDTO walksrequestdto)
         {
-            // Map Dto to Domain
-            var WalkDomain = mapper.Map<Walks>(walksrequestdto);
 
-            WalkDomain = await walksRepository.CreateAsyc(WalkDomain);
+                // Map Dto to Domain
+                var WalkDomain = mapper.Map<Walks>(walksrequestdto);
 
-            // Map Domain to Dto
-            var WalkDto = mapper.Map<WalksDto>(WalkDomain);
+                WalkDomain = await walksRepository.CreateAsyc(WalkDomain);
 
-            //return Ok(WalkDto);
-            return CreatedAtAction(nameof(GetWalksById), new { id = WalkDto.Id }, WalkDto);
+                // Map Domain to Dto
+                var WalkDto = mapper.Map<WalksDto>(WalkDomain);
+
+                //return Ok(WalkDto);
+                return CreatedAtAction(nameof(GetWalksById), new { id = WalkDto.Id }, WalkDto);
+            
         }
 
         [HttpGet]
@@ -68,22 +70,24 @@ namespace INDWalks.Controllers
         [ValidateModel]
         public async Task<IActionResult> UpdateWalks([FromRoute] Guid id, [FromBody] UpdateWalkRequestDTO updatewalkRequestdto)
         {
-            // Map DTO to Domain
 
-            var WalkDomain = mapper.Map<Walks>(updatewalkRequestdto);
+                // Map DTO to Domain
 
-            WalkDomain = await walksRepository.UpdateWalkAsync(id, WalkDomain);
+                var WalkDomain = mapper.Map<Walks>(updatewalkRequestdto);
 
-            if(WalkDomain == null)
-            {
-                return NotFound("No data exist with this Id.");
-            }
+                WalkDomain = await walksRepository.UpdateWalkAsync(id, WalkDomain);
 
-            // Map Domain to DTO
+                if (WalkDomain == null)
+                {
+                    return NotFound("No data exist with this Id.");
+                }
 
-            var Walkdto = mapper.Map<WalksDto>(WalkDomain);
+                // Map Domain to DTO
+
+                var Walkdto = mapper.Map<WalksDto>(WalkDomain);
+
+                return Ok(Walkdto);
             
-            return Ok(Walkdto);
         }
 
         [HttpDelete]
