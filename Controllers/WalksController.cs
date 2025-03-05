@@ -1,10 +1,12 @@
 ﻿using AutoMapper;
+using INDWalks.CustomActionValidations;
 using INDWalks.Data;
 using INDWalks.Models.Domain;
 using INDWalks.Models.DTOs;
 using INDWalks.Repositories;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 
 namespace INDWalks.Controllers
 {
@@ -23,6 +25,7 @@ namespace INDWalks.Controllers
         }
 
         [HttpPost]
+        [ValidateModel]
         public async Task<IActionResult> CreateWalks([FromBody] WalksRequestDTO walksrequestdto)
         {
 
@@ -40,9 +43,9 @@ namespace INDWalks.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetAll([FromQuery] string? filterOn, [FromQuery] string? filterquery)
         {
-            var WalkDomain = await walksRepository.GetAllAsync();
+            var WalkDomain = await walksRepository.GetAllAsync(filterOn,filterquery);
 
             var WalkDto = mapper.Map<List<WalksDto>>(WalkDomain);
             return Ok(WalkDto);
@@ -64,6 +67,7 @@ namespace INDWalks.Controllers
 
         [HttpPut]
         [Route("{id:Guid}")]
+        [ValidateModel]
         public async Task<IActionResult> UpdateWalks([FromRoute] Guid id, [FromBody] UpdateWalkRequestDTO updatewalkRequestdto)
         {
 

@@ -33,9 +33,27 @@ namespace INDWalks.Repositories
             return existingWalk;
         }
 
-        public async Task<List<Walks>> GetAllAsync()
+        public async Task<List<Walks>> GetAllAsync(string? filterOn = null, string? filterquery = null)
         {
-            return await dbContext.Walks.Include("Difficulty").Include("Region").ToListAsync();
+            var walk = dbContext.Walks.Include("Difficulty").Include("Region").AsQueryable();
+
+            //Filtering
+            if (!string.IsNullOrWhiteSpace(filterOn) && !string.IsNullOrWhiteSpace(filterquery))
+            { 
+                switch (filterOn.ToLower())
+                {
+                    case "region":
+                        walk = walk.Where(x => x.Region.Name.Contains(filterquery));
+                        break;
+                    case "difficulty":
+                        walk = walk.Where(x => x.Difficulty.Name.Contains(filterquery));
+                        break;
+                    default:
+                        break;
+                }
+            }
+
+            return await walk.ToListAsync();
         }
 
         public async Task<Walks?> GetbyIdAsync(Guid id)
