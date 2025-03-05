@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using INDWalks.CustomActionValidations;
 using INDWalks.Data;
 using INDWalks.Models.Domain;
 using INDWalks.Models.DTOs;
@@ -80,6 +81,7 @@ namespace INDWalks.Controllers
 
 
         [HttpPost]
+        [ValidateModel]
         public async Task<IActionResult> CreateRegion([FromBody]AddRegionRequestDto addregionreqdto)
         {
 
@@ -115,6 +117,7 @@ namespace INDWalks.Controllers
 
         [HttpPut]
         [Route("{id:Guid}")]
+        [ValidateModel]
         public async Task<IActionResult> UpdateRegion([FromRoute] Guid id, [FromBody] UpdateRegionRequestDto updateregiondto)
         {
             // Map DTO with Domain
