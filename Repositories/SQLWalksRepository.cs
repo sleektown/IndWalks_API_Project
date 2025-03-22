@@ -33,7 +33,7 @@ namespace INDWalks.Repositories
             return existingWalk;
         }
 
-        public async Task<List<Walks>> GetAllAsync(string? filterOn = null, string? filterquery = null)
+        public async Task<List<Walks>> GetAllAsync(string? filterOn = null, string? filterquery = null, string? sortby = null, bool? isAscending = true, int pagenumber = 1, int pagesize = 5)
         {
             var walk = dbContext.Walks.Include("Difficulty").Include("Region").AsQueryable();
 
@@ -53,7 +53,35 @@ namespace INDWalks.Repositories
                 }
             }
 
-            return await walk.ToListAsync();
+            //Sorting
+            if (!string.IsNullOrWhiteSpace(sortby))
+            {
+                    switch(sortby.ToLower())
+                    {
+                        case "name":
+                            walk = isAscending ?? true ? walk.OrderBy(x => x.Name) : walk.OrderByDescending(x=> x.Name);
+                            break;
+                        case "length":
+                            walk = isAscending ?? true ? walk.OrderBy(x => x.LengthInKm): walk.OrderByDescending(x=> x.LengthInKm);
+                            break;
+                        case"region":
+                            walk = isAscending ?? true ? walk.OrderBy(x => x.Region.Name): walk.OrderByDescending(x=> x.Region.Name);
+                            break;
+                        case "difficulty":
+                            walk = isAscending ?? true ? walk.OrderBy(x => x.Difficulty.Name): walk.OrderByDescending(x => x.Difficulty.Name);
+                            break;
+                        default:
+                            break;
+                    }
+                
+               
+            }
+
+            // pagination
+
+            int skipResult = (pagenumber - 1) * pagesize;
+
+            return await walk.Skip(skipResult).Take(pagesize).ToListAsync();
         }
 
         public async Task<Walks?> GetbyIdAsync(Guid id)

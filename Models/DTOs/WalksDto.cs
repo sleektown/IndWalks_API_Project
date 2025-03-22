@@ -5,6 +5,7 @@ namespace INDWalks.Models.DTOs
     public class WalksDto
     {
         public Guid Id { get; set; }
+
         [Required]
         [MinLength(5, ErrorMessage = "Min length of name field is 5.")]
         [MaxLength(50, ErrorMessage = "Max length of name field is 50.")]

@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("INDWalks")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+c31719b1c794c015b3dccffae8a5a1a79307009d")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+032b6629de1e6ed0c0930ed7ac8946087e3d02ec")]
 [assembly: System.Reflection.AssemblyProductAttribute("INDWalks")]
 [assembly: System.Reflection.AssemblyTitleAttribute("INDWalks")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

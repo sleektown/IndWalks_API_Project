@@ -43,9 +43,9 @@ namespace INDWalks.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll([FromQuery] string? filterOn, [FromQuery] string? filterquery)
+        public async Task<IActionResult> GetAll([FromQuery] string? filterOn, [FromQuery] string? filterquery, [FromQuery] string? sortby, [FromQuery] bool? isAscending, [FromQuery] int pagenumber, [FromQuery] int pagesize)
         {
-            var WalkDomain = await walksRepository.GetAllAsync(filterOn,filterquery);
+            var WalkDomain = await walksRepository.GetAllAsync(filterOn,filterquery, sortby, isAscending ?? true, pagenumber, pagesize);
 
             var WalkDto = mapper.Map<List<WalksDto>>(WalkDomain);
             return Ok(WalkDto);

@@ -9,7 +9,7 @@ namespace INDWalks.Repositories
 
         Task<Walks?> DeleteWalkAsync(Guid id);
 
-        Task<List<Walks>> GetAllAsync(string? filterOn = null, string? filterquery = null);
+        Task<List<Walks>> GetAllAsync(string? filterOn = null, string? filterquery = null, string? sortby = null, bool? isAscending = true , int pagenumber = 1, int pagesize = 5);
 
         Task<Walks?> GetbyIdAsync(Guid id);
 
